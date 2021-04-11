@@ -1,0 +1,100 @@
+﻿@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
+
+@model MvcMovie.Models.MovieGenreViewModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+@*try to get information from appsettings.json and loading it to the view*@
+
+<table class="table table-bordered table-sm table-striped">
+    <tr>
+        <td>Default</td>
+        <td>@Configuration["Logging:LogLevel:Default"]</td>
+    </tr>
+    <tr>
+        <td>Microsoft</td>
+        <td>@Configuration["Logging:LogLevel:Microsoft"]</td>
+    </tr>
+    <tr>
+        <td>Microsoft.Hosting.Lifetime</td>
+        <td>@Configuration["Logging:LogLevel:Microsoft.Hosting.Lifetime"]</td>
+    </tr>
+</table>
+@section Top {
+    This is Top from child view Movie/index
+}
+@await Html.PartialAsync("./PartialView/TestPartialView", new List<string> { "Chuong", "Huu", "Do" })
+
+<div style="color: blue;border: 1px solid #b6ff00">
+    @await Component.InvokeAsync("TestViewComponent")
+</div>
+   
+
+    <h1>Index</h1>
+
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+    <form asp-controller="Movies" asp-action="Index" method="get">
+        <p>
+
+            <select asp-for="MovieGenre" asp-items="Model.Genres">
+                <option value="">All</option>
+            </select>
+
+            Title: <input type="text" asp-for="SearchString" />
+            <input type="submit" value="Filter" />
+        </p>
+    </form>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Movies[0].Title)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Movies[0].ReleaseDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Movies[0].Genre)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Movies[0].Price)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Movies[0].Rating)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Movies)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ReleaseDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Genre)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Price)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Rating)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>

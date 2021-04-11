@@ -1,0 +1,14 @@
+﻿@model List<string>
+@{
+    ViewData["Title"] = "TestPartialView";
+}
+
+<h2>TestPartialView</h2>
+<div style="color:red">
+    <ul>
+        @foreach (var item in Model)
+        {
+            <li>@item</li>
+        }
+    </ul>
+</div>
